@@ -1,15 +1,15 @@
 import './App.css';
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Navigate, Route, HashRouter as Router, Routes } from 'react-router-dom';
 import Login from './pages/login';
 import Player from './pages/player';
 
 function App() {
   return (
-    <Router>
+    <Router basename='/broadway-lite'>
       <Routes>
-        <Route exact path="/broadway-lite" element={<Login />} />
-        <Route exact path="/broadway-lite/player" element={<Player />} />
-        <Route path="*" element={<Navigate to="/broadway-lite" />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/player" element={<Player />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

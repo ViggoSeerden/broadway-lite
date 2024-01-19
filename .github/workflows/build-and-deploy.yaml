@@ -23,8 +23,8 @@ jobs:
 
       - name: Build and Deploy
         env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
+          CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
+          REDIRECT_URI: ${{ secrets.REACT_APP_REDIRECT_URI }}
         run: npm run build
 
       - name: Deploy to GitHub Pages
