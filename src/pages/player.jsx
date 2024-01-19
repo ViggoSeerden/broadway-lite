@@ -69,7 +69,7 @@ export default function Player() {
             clearInterval(timer);
         }
         return () => clearInterval(timer);
-    }, [running, duration]);
+    }, [running, duration, token]);
 
     function getCurrentSong(token) {
         fetch("https://api.spotify.com/v1/me/player", {

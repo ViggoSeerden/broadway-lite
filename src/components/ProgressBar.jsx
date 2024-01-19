@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiProgress } from '@elastic/eui';
 import { msToTime } from '../utils';
 
