@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 14
 
       - name: Install Dependencies
         run: npm install
@@ -26,6 +26,12 @@ jobs:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
         run: npm run build
+
+      - name: Debug
+        run: |
+          echo "CLIENT_ID: $CLIENT_ID"
+          echo "REDIRECT_URI: $REDIRECT_URI"
+          echo "GH_TOKEN: $GH_TOKEN"
 
       - name: Deploy to GitHub Pages
         run: |
