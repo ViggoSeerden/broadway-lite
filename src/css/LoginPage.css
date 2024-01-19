@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'Roboto';
+    src: local("Roboto"),
+        url('../fonts/Roboto-Regular.ttf')
+}
+
+@font-face {
+    font-family: 'Roboto Thin';
+    src: local("Roboto Thin"),
+        url('../fonts/Roboto-Thin.ttf')
+}
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: local("Roboto Light"),
+        url('../fonts/Roboto-Light.ttf')
+}
+
+.FaqBtn {
+    width: 25vmin;
+    max-width: 100px;
+    height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 550;
+    font-size: 18px;
+    border-radius: 500px;
+    background-color: Gray;
+    border: none;
+    color: white;
+}
+
+.FaqBtn:hover {
+    filter: brightness(60%);
+}
+
+.FaqBtn:active {
+    filter: brightness(20%);
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.title {
+    font-family: 'Roboto Thin';
+    color: white;
+    font-size: 72px;
+}
+
+.credits {
+    font-family: 'Roboto Thin';
+    color: white
+}
+
+.fadein {
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
