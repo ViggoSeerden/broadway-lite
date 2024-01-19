@@ -16,7 +16,7 @@ const appFiles = [
   "offline.html"
 ];
 
-
+/* eslint-disable no-restricted-globals */
 self.addEventListener("install", (installing) => {
   installing.waitUntil(
     caches.open(cacheName).then((cache) => {
@@ -27,9 +27,11 @@ self.addEventListener("install", (installing) => {
   );
 });
 
+/* eslint-disable no-restricted-globals */
 self.addEventListener("activate", () => {
 });
 
+/* eslint-disable no-restricted-globals */
 self.addEventListener("fetch", (fetching) => {
   fetching.respondWith(
       caches.match(fetching.request).then((response) => {
