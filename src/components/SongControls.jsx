@@ -8,7 +8,7 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 
 export default function SongControls({ running, shuffle, repeat, token, onToggleShuffle, onToggleRepeat, onToggleRunning, onSongChange }) {
 
-    const [isListening, setIsListening] = useState(localStorage.getItem('isListening') === 'Off' ? 'Off' : 'On')
+    const [isListening, setIsListening] = useState(localStorage.getItem('isListening') === 'On' ? 'On' : 'Off')
 
     useEffect(() => {
         localStorage.setItem('isListening', isListening)
