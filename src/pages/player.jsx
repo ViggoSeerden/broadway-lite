@@ -217,7 +217,7 @@ export default function Player() {
 
                                 <EuiSpacer size='s' />
 
-                                {/* Lyrics, Queue, Recommendations, Command List, Logout */}
+                                {/* Lyrics (removed), Queue, Recommendations, Logout */}
                                 <ButtonOptions token={token} currSong={currSong} time={elapsedTime} />
                             </EuiFlexItem>
                         </EuiFlexGroup>

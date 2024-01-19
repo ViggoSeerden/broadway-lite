@@ -45,9 +45,10 @@
   }
 
 .title {
-    font-family: 'Roboto Thin';
+    font-family: 'Broadway';
     color: white;
     font-size: 72px;
+    font-weight: lighter;
 }
 
 .credits {

@@ -41,12 +41,17 @@ export default function ButtonOptions({ token, currSong, time }) {
         getData();
     }, [token, currSong])
 
+    function logout() {
+        window.location.hash = '';
+    }
+
     return (
         <>
             <EuiFlexGroup alignItems='center' justifyContent='center'>
                 {/* <LyricsPopup lyrics={lyrics} lyricsFound={lyricsFound} lyricsSynced={lyricsSynced} elapsedTime={time} /> */}
                 <TrackListPopup trackList={queue} title='Queue' />
                 <TrackListPopup trackList={recommendations} title='Suggestions' />
+                <button className="buttonOption" title="Logout" onClick={logout}>Log Out</button>
             </EuiFlexGroup>
             <EuiFlexGroup alignItems='center' justifyContent='center'>
 

@@ -40,6 +40,17 @@ export default function AboutPopup() {
                             Spotify developer dashboard. I don't know why this restriction exists, but as long as it's there, this project will not be usable by
                             the general public.
                         </p>
+                        <h2>Data Usage</h2>
+                        <p>This app needs access to your Spotify account to work. Specifically, the data it'll get access to is your public account data (username, 
+                            profile picture, followers and public playlists) and your current activity (song that's currently playing and queue). Furthermore,
+                            you will grant this app control over your Spotify sessions. This is so that you can control the app from here. If you wish to revoke
+                            access, you can find the option in the <a href='https://www.spotify.com/us/account/apps/' target='_blank' without rel="noreferrer">
+                                Spotify App Settings</a>. While in here, look for Broadway and click the "Remove Access" button.
+                        </p>
+                        <br/>
+                        <p>Finally, your background and microphone preferences are saved in your browser's site settings. Removing this simply requires you to
+                            erase your browsing data entirely, or just the site settings for this website.
+                        </p>
                         <h2>Sponsors</h2>
                         <EuiFlexGroup justifyContent='center' alignItems='center' gutterSize='xl'>
                             <img src={mcs} width='20%' height='20%' alt='mcs'/>
