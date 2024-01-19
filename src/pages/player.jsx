@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSwipeable } from 'react-swipeable';
 import { setPosition, nextSong, previousSong, msToTime } from '../utils';
-import { EuiFlexGroup, EuiFlexItem, EuiImage, EuiSpacer } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiImage, EuiLink, EuiSpacer, EuiText } from '@elastic/eui';
 import '../css/PlayerPage.css'
 import ProgressBar from '../components/ProgressBar';
 import SongControls from '../components/SongControls';
@@ -16,6 +16,9 @@ export default function Player() {
     const [repeat, setRepeat] = useState();
     const [running, setRunning] = useState(false);
     const [duration, setDuration] = useState();
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     const [elapsedTime, setElapsedTime] = useState(0);
     const [progressTime, setProgressTime] = useState(msToTime(elapsedTime));
@@ -33,7 +36,7 @@ export default function Player() {
     useEffect(() => {
         if (!token) {
             const hash = window.location.hash
-                .substring(1)
+                .substring(9)
                 .split("&")
                 .reduce(function (initial, item) {
                     if (item) {
@@ -46,6 +49,10 @@ export default function Player() {
             if (_token) {
                 setToken(_token)
                 getCurrentSong(_token)
+                setIsLoading(false)
+            } else {
+                setError(true)
+                setIsLoading(false)
             }
         }
     }, [token])
@@ -158,53 +165,71 @@ export default function Player() {
 
     return (
         <>
-            {currSong && token &&
-                <EuiFlexGroup alignItems='center' justifyContent='center' direction={useRow ? 'row' : 'column'}>
-                    <EuiFlexItem>
-                        <EuiSpacer size={useRow ? 's' : 'l'} />
-
-                        {/* Album Cover & Background Image */}
-                        {useRow && window.innerWidth < 768 && window.innerHeight <= 375 ?
-                            <EuiFlexGroup justifyContent='center'>
-                                <button className='buttonOption' onClick={() => setVinylBG(!vinylBG)}>Swap Image</button>
-                            </EuiFlexGroup>
-                            :
-                            <div className='fadein' title="Switch Background" id="album" onClick={() => setVinylBG(!vinylBG)} {...handlers}>
-                                <EuiImage size='l' src={currSong.album.images[0].url} alt="Album Cover" id="albumcover" className="album" />
-                            </div>
-                        }
-
-                        <div id='bgimg' className={vinylBG ? 'vinyl fadein' : 'bg fadein'}>
-                            <img src={currSong.album.images[0].url} alt="bg" />
-                        </div>
-                    </EuiFlexItem>
-                    <EuiFlexItem>
-                        {/* Song Name, Artist(s) and Album */}
-                        <div style={{ paddingLeft: '2%' }}>
-                            <p className='songtitle'>{currSong.name.length < 45 ? currSong.name : currSong.name.substring(0, 45) + '...'}</p>
-                            <p>{currSong.artists[0].name.length < 45 ? currSong.artists[0].name : currSong.artists[0].name.substring(0, 45) + '...'}</p>
-                            <p>{currSong.album.name.length < 45 ? currSong.album.name : currSong.album.name.substring(0, 45) + '...'}</p>
-                        </div>
-
-                        <EuiSpacer size='s' />
-
-                        {/* Progress Bar */}
-                        <ProgressBar key={currSong.id} duration={duration} elapsedTime={elapsedTime} progressTime={progressTime} running={running}
-                            onSongEnd={() => getCurrentSong(token)} onSeek={handleSeek} />
-
-                        <EuiSpacer size='s' />
-
-                        {/* Playback controls (play/pause, next/previous, shuffle, repeat, volume, microphone) */}
-                        <SongControls running={running} shuffle={shuffle} repeat={repeat} token={token}
-                            onToggleShuffle={handleToggleShuffle} onToggleRepeat={handleToggleRepeat} onToggleRunning={handleToggleRunning}
-                            onSongChange={() => getCurrentSong(token)} />
-
-                        <EuiSpacer size='s' />
-
-                        {/* Lyrics, Queue, Recommendations, Command List, Logout */}
-                        <ButtonOptions token={token} currSong={currSong} time={elapsedTime} />
-                    </EuiFlexItem>
+            {isLoading ?
+                <EuiFlexGroup alignItems='center' justifyContent='center'>
+                    <EuiSpacer size='xl' />
+                    <EuiText>Loading...</EuiText>
                 </EuiFlexGroup>
+                :
+                <>
+                    {currSong && token &&
+                        <EuiFlexGroup alignItems='center' justifyContent='center' direction={useRow ? 'row' : 'column'}>
+                            <EuiFlexItem>
+                                <EuiSpacer size={useRow ? 's' : 'l'} />
+
+                                {/* Album Cover & Background Image */}
+                                {useRow && window.innerWidth < 768 && window.innerHeight <= 375 ?
+                                    <EuiFlexGroup justifyContent='center'>
+                                        <button className='buttonOption' onClick={() => setVinylBG(!vinylBG)}>Swap Image</button>
+                                    </EuiFlexGroup>
+                                    :
+                                    <div className='fadein' title="Switch Background" id="album" onClick={() => setVinylBG(!vinylBG)} {...handlers}>
+                                        <EuiImage size='l' src={currSong.album.images[0].url} alt="Album Cover" id="albumcover" className="album" />
+                                    </div>
+                                }
+
+                                <div id='bgimg' className={vinylBG ? 'vinyl fadein' : 'bg fadein'}>
+                                    <img className={running ? 'rotate' : ''} src={currSong.album.images[0].url} alt="bg" />
+                                </div>
+                            </EuiFlexItem>
+                            <EuiFlexItem>
+                                {/* Song Name, Artist(s) and Album */}
+                                <div style={{ paddingLeft: '2%', width:"350px" }}>
+                                    <p className='songtitle' style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}>{currSong.name}</p>
+                                    <p style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}>{currSong.artists.map((artist, index) => (
+                                        <>{artist.name}{index !== currSong.artists.length - 1 && <span>, &nbsp;</span>}</>
+                                    ))}</p>
+                                    <p style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}>{currSong.album.name}</p>
+                                </div>
+
+                                <EuiSpacer size='s' />
+
+                                {/* Progress Bar */}
+                                <ProgressBar key={currSong.id} duration={duration} elapsedTime={elapsedTime} progressTime={progressTime} running={running}
+                                    onSongEnd={() => getCurrentSong(token)} onSeek={handleSeek} />
+
+                                <EuiSpacer size='s' />
+
+                                {/* Playback controls (play/pause, next/previous, shuffle, repeat, volume, microphone) */}
+                                <SongControls running={running} shuffle={shuffle} repeat={repeat} token={token}
+                                    onToggleShuffle={handleToggleShuffle} onToggleRepeat={handleToggleRepeat} onToggleRunning={handleToggleRunning}
+                                    onSongChange={() => getCurrentSong(token)} />
+
+                                <EuiSpacer size='s' />
+
+                                {/* Lyrics, Queue, Recommendations, Command List, Logout */}
+                                <ButtonOptions token={token} currSong={currSong} time={elapsedTime} />
+                            </EuiFlexItem>
+                        </EuiFlexGroup>
+                    }
+                    {error &&
+                        <EuiFlexGroup direction='column' alignItems='center' justifyContent='center'>
+                            <EuiSpacer size='xl' />
+                            <EuiText>Something went wrong. Please try logging in again.</EuiText>
+                            <EuiLink href='/broadway-lite'>Back to Login.</EuiLink>
+                        </EuiFlexGroup>
+                    }
+                </>
             }
         </>
     )

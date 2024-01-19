@@ -1,7 +1,7 @@
 {
   "name": "broadway-lite",
   "version": "1.0.0",
-  "homepage": "./",
+  "homepage": "/broadway-lite/#",
   "private": true,
   "dependencies": {
     "@elastic/datemath": "^5.0.3",

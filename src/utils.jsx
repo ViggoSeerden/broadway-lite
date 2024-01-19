@@ -1,16 +1,22 @@
 export async function getLyrics(song) {
-    const response = await fetch(
-        'https://spotify-lyric-api-984e7b4face0.herokuapp.com/?url=' +
-        song.external_urls.spotify,
-        {
-            method: 'GET',
+    try {
+        const response = await fetch(
+            'https://spotify-lyric-api-984e7b4face0.herokuapp.com/?url=' +
+            song.external_urls.spotify,
+            {
+                method: 'GET',
+            }
+        )
+    
+        if (response.ok) {
+            const lyrics = await response.json()
+            return lyrics
+        } else {
+            return {
+                error: true
+            }
         }
-    )
-
-    if (response.ok) {
-        const lyrics = await response.json()
-        return lyrics
-    } else {
+    } catch {
         return {
             error: true
         }
